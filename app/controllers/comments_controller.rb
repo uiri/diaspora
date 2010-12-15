@@ -45,4 +45,8 @@ class CommentsController < ApplicationController
     end
   end
 
+# to whoever ends up doing a delete method for comments,
+# it may need to be overwritten in Likes Controller so that
+# likes and dislikes can be deleted
+
 end

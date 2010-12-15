@@ -156,7 +156,6 @@ en:
           success: "Successfully removed person from aspect"
           failure: "Failed to remove person from aspect"
           no_membership: "Could not find the selected person in that aspect"
- 
   aspects:
       contacts_visible: "Contacts in this aspect will be able to see each other."
       contacts_not_visible: "Contacts in this aspect will not be able to see each other."
@@ -512,8 +511,13 @@ en:
   pagination:
       next: "Next"
       previous: "Previous"
+<<<<<<< HEAD
   date:
       formats:
           fullmonth_day: "%B %d"
           birthday: "%B %d"
           birthday_with_year: "%B %d %Y"
+=======
+  like: "likes this"
+  dislike: "dislikes this"
+>>>>>>> Everything except the javascript to actually create likes is done… I think.
