@@ -15,6 +15,7 @@ class Post < ActiveRecord::Base
   xml_attr :created_at
 
   has_many :comments, :order => 'created_at ASC', :dependent => :destroy
+  has_many :likes, :order => 'created_at ASC', :dependent => :destroy
   has_many :post_visibilities
   has_many :aspects, :through => :post_visibilities
   has_many :mentions, :dependent => :destroy

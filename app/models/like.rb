@@ -11,4 +11,9 @@ class HandleValidator < ActiveModel::Validator
 end
 
 class Like < Comment
+
+xml_reader :dislike
+
+key :dislike, Boolean, :default => false
+
 end
