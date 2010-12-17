@@ -67,4 +67,4 @@
 
   #photo_stream.stream.show
     %div{:data=>{:guid=>@parent.id}}
-      = render "comments/comments", :post_id => @parent.id, :comments => @parent.comments, :always_expanded => true
+      = render "comments/comments", :post_id => @parent.id, :comments => @parent.comments, :always_expanded => true, :likes => @parent.likes
