@@ -25,8 +25,16 @@
     = link_to t('.destroy'), @status_message, :confirm => t('are_you_sure'), :method => :delete
 
 
+<<<<<<< HEAD
   %h5
     = t('_comments')
   #status_message_stream.stream.show
     %div{:data=>{:guid=>@status_message.id}}
       = render "comments/comments", :post_id => @status_message.id, :comments => @status_message.comments, :always_expanded => true
+=======
+  %h4{:style=>"margin-bottom:5px;"}= t('_comments')
+  %ul{:class => 'stream show', :id => 'status_message_stream'}
+    %li.message{:data=>{:guid=>@status_message.id}}
+      = render "likes/likes", :post_id => @status_message.id, :like_hashes => @like_hashes, :always_expanded => true
+      = render "comments/comments", :post_id => @status_message.id, :comment_hashes => @comment_hashes, :always_expanded => true
+>>>>>>> I didnt realize how widespread stuff with comments actually is until now

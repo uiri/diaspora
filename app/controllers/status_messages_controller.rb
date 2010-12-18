@@ -48,6 +48,7 @@ class StatusMessagesController < ApplicationController
                                          :person => @status_message.person,
                                          :photos => @status_message.photos,
                                          :comments => [],
+                                         :likes => [],
                                          :all_aspects => current_user.aspects,
                                          :current_user => current_user
                                        }
