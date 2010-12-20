@@ -12,11 +12,11 @@ class LikesController < CommentsController
 
     if params[:dislike]
       text = 'dislikes this'
-      @dislike = current_user.build_comment(text, :on => target)
+      @dislike = current_user.build_like(text, :on => target)
       if @dislike.save(:safe => true)
         raise 'MongoMapper failed to catch a failed save' unless @dislike.id
         Rails.logger.info("event=like_create user=#{current_user.diaspora_handle} status=success like=#{@dislike.id}")
-        current_user.dispatch_comment(@dislike)
+        current_user.dispatch_like(@dislike)
 
         respond_to do |format|
           format.js{
@@ -39,11 +39,11 @@ class LikesController < CommentsController
       end
     else
       text = 'likes this'
-      @like = current_user.build_comment(text, :on => target)
+      @like = current_user.build_like(text, :on => target)
       if @like.save(:safe => true)
         raise 'MongoMapper failed to catch a failed save' unless @like.id
         Rails.logger.info("event=like_create user=#{current_user.diaspora_handle} status=success like=#{@like.id}")
-        current_user.dispatch_comment(@like)
+        current_user.dispatch_like(@like)
 
         respond_to do |format|
           format.js{
