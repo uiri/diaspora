@@ -19,6 +19,7 @@
     = render 'status_messages/status_message', :post => post, :photos => post.photos
 
     .info
+<<<<<<< HEAD
       - if post.public?
         %span.aspect_badges
           %span.aspect_badge.public
@@ -32,3 +33,9 @@
     -# Like this post link goes here
     = render "likes/likes", :post_id => post.id, :likes => post.likes, :current_user => current_user, :condensed => true
     = render "comments/comments", :post_id => post.id, :comments => post.comments, :current_user => current_user, :condensed => true, :commenting_disabled => defined?(@commenting_disabled)
+=======
+      %span.time= link_to(how_long_ago(post), status_message_path(post))
+      = comment_toggle(comments.length, @commenting_disabled)
+      -# Like this post link goes here
+    = render "comments/comments", :post_id => post.id, :comment_hashes => comments, :like_hashes => @likes, :condensed => true, :commenting_disabled => defined?(@commenting_disabled)
+>>>>>>> still fruitless work
