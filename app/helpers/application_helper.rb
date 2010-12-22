@@ -138,7 +138,7 @@ module ApplicationHelper
   end
 
   def person_link(person)
-    "<a href='/people/#{person.id}'>
+   "<a href='/people/#{person.id}'>
   #{h(person.name)}
 </a>".html_safe
   end
