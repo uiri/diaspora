@@ -1,0 +1,11 @@
+-#   Copyright (c) 2010, Diaspora Inc.  This file is
+-#   licensed under the Affero General Public License version 3 or later.  See
+-#   the COPYRIGHT file.
+
+%ul.comments{:id => post_id, :class => ("hidden" if like_hashes.empty?)}
+  -if like_hashes.length > 2
+    .older_comments{:class => ("hidden inactive" if defined?(condensed) && condensed)}
+      = render :partial => 'likes/like', :collection => like_hashes[0..-4], :as => :hash
+    = render :partial => 'likes/like', :collection => like_hashes[-3, 3], :as => :hash
+  -else
+    = render :partial => 'likes/like', :collection => like_hashes, :as => :hash
