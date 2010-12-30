@@ -99,3 +99,4 @@ Factory.define(:notification) do |n|
   end
 end
 
+Factory.define(:like) {}

@@ -57,6 +57,7 @@ class Post < ActiveRecord::Base
     false
   end
 
+<<<<<<< HEAD
   def subscribers(user)
     user.people_in_aspects(user.aspects_with_post(self.id))
   end

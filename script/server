@@ -124,7 +124,6 @@ fi
 
 redis_config
 
-
 # Force AGPL
 if [ -w public -a ! -e  public/source.tar.gz ]; then
     branch=$( git branch | awk '/^[*]/ {print $2}')

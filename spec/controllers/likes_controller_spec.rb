@@ -19,18 +19,19 @@ describe LikesController do
 
   describe '#create' do
     let(:like_hash) {
-      {:post_id =>"#{@post.id}"}
+      {:text => "likes this",
+       :post_id =>"#{@post.id}"}
     }
-#    context "on my own post" do
-#      before do
-#        @post = user.post :status_message, :message => 'GIANTS', :to => aspect.id
-#      end
-#      it 'responds to format js' do
-#        post :create, like_hash.merge(:format => 'js')
+    context "on my own post" do
+      before do
+        @post = user.post :status_message, :message => 'GIANTS', :to => aspect.id
+      end
+      it 'responds to format js' do
+        post :create, like_hash.merge(:format => 'js'), :dislike => false
 #        response.code.should == '201'
-#        response.body.should match like_hash[:text]
-#      end
-#    end
+        response.body.should match like_hash[:text]
+      end
+    end
     context "on a post from a contact" do
       before do
         connect_users(user, aspect, user2, aspect2)
@@ -65,7 +66,7 @@ describe LikesController do
       before do
         @post = user2.post :status_message, :message => 'GIANTS', :to => aspect2.id
       end
-      it 'posts no comment' do
+      it 'posts no like' do
         user.should_receive(:like).exactly(0).times
         post :create, like_hash, :dislike => false
         response.code.should == '406'

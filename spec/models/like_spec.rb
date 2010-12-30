@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-describe Comment do
+describe Like do
   let(:user)    {make_user}
   let(:aspect)  {user.aspects.create(:name => "Doofuses")}
 
@@ -19,10 +19,10 @@ describe Comment do
       @hi = user.post(:status_message, :message => "hi", :to => aspect.id)
       @lonely = user.post(:status_message, :message => "Hello?", :to => aspect.id)
 
-      @l11 = user2.comment "likes this", :on => @hello
-      @l21 = user2.comment "likes this", :on => @hi
-      @l12 = user.comment "likes this", :on => @hello
-      @l22 = user.comment "likes this", :on => @hi
+      @l11 = user2.like "likes this", :on => @hello
+      @l21 = user2.like "likes this", :on => @hi
+      @l12 = user.like "likes this", :on => @hello
+      @l22 = user.like "likes this", :on => @hi
 
       @l12.created_at = Time.now+10
       @l12.save!
@@ -33,7 +33,7 @@ describe Comment do
       Like.hash_from_post_ids([@lonely.id]).should ==
         {@lonely.id => []}
     end
-    it 'returns a hash from posts to comments' do
+    it 'returns a hash from posts to likes' do
       Like.hash_from_post_ids([@hello.id, @hi.id]).should ==
         {@hello.id => [@l11, @l12],
          @hi.id => [@l21, @l22]
@@ -41,7 +41,7 @@ describe Comment do
     end
     it 'gets the people from the db' do
       hash = Like.hash_from_post_ids([@hello.id, @hi.id])
-      Person.from_post_comment_hash(hash).should == {
+      Person.from_post_like_hash(hash).should == {
         user.person.id => user.person,
         user2.person.id => user2.person,
       }
