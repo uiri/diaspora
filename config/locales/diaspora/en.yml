@@ -511,13 +511,8 @@ en:
   pagination:
       next: "Next"
       previous: "Previous"
-<<<<<<< HEAD
   date:
       formats:
           fullmonth_day: "%B %d"
           birthday: "%B %d"
           birthday_with_year: "%B %d %Y"
-=======
-  like: "likes this"
-  dislike: "dislikes this"
->>>>>>> Everything except the javascript to actually create likes is done… I think.
