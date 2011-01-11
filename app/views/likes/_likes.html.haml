@@ -3,6 +3,7 @@
 -#   the COPYRIGHT file.
 
 %ul.comments{:id => post_id, :class => ("hidden" if like_hashes.empty?)}
+  = new_like_form(post_id)
   -if like_hashes.length > 2
     .older_comments{:class => ("hidden inactive" if defined?(condensed) && condensed)}
       = render :partial => 'likes/like', :collection => like_hashes[0..-4], :as => :hash

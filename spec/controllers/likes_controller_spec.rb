@@ -28,7 +28,7 @@ describe LikesController do
       end
       it 'responds to format js' do
         post :create, like_hash.merge(:format => 'js'), :dislike => false
-#        response.code.should == '201'
+        response.code.should == '201'
         response.body.should match like_hash[:text]
       end
     end
