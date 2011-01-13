@@ -3,6 +3,11 @@
 #   the COPYRIGHT file.
 
 class LikesController < CommentsController
+  include ApplicationHelper
+  before_filter :authenticate_user!
+
+  respond_to :html
+  respond_to :json, :only => :show
 
   def create
     target = current_user.find_visible_post_by_id params[:post_id]
