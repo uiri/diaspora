@@ -2,33 +2,31 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-class HandleValidator < ActiveModel::Validator
-  def validate(document)
-    unless document.diaspora_handle == document.person.diaspora_handle
-      document.errors[:base] << "Diaspora handle and person handle must match"
-    end
-  end
-end
-
 class Like < Comment
 
-  xml_reader :dislike
+  def receive(user, person)
+    local_like = Like.where(:guid => self.guid).first
+    like = local_like || self
 
-  key :dislike, Boolean, :default => false
+    unless comment.post.person == user.person || comment.verify_post_creator_signature
+      Rails.logger.info("event=receive status=abort reason='like signature not valid' recipient=#{user.diaspora_handle} sender=#{self.post.person.diaspora_handle} payload_type=#{self.class} post_id=#{self.post_id}")
+      return
+    end
 
-  def self.hash_from_post_ids post_ids
-    hash = {}
-    likes = self.on_posts(post_ids)
-    post_ids.each do |id|
-      hash[id] = []
+    #sign like as post creator if you've been hit UPSTREAM
+    if user.owns? like.post
+      like.post_creator_signature = like.sign_with_key(user.encryption_key)
+      like.save
     end
-    likes.each do |like|
-      hash[like.post_id] << like
+
+    #dispatch like DOWNSTREAM, received it via UPSTREAM
+    unless user.owns?(like)
+      like.save
+      user.dispatch_like(like)
     end
-    hash.each_value {|likes| likes.sort!{|l1, l2| l1.created_at <=> l2.created_at }}
-    hash
+
+    like.socket_to_user(user, :aspect_ids => like.post.aspect_ids)
+    like
   end
-  scope :on_posts, lambda { |post_ids|
-    where(:post_id.in => post_ids)
-  }
+  
 end
