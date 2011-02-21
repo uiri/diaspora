@@ -161,13 +161,13 @@ class User < ActiveRecord::Base
   ######### Likes ###########
   def build_like(text, options = {})
     like = Like.new(:person_id => self.person.id,
-                          :diaspora_handle => self.person.diaspora_handle,
                           :text => text,
                           :post => options[:on])
 
+    like.set_guid
     like.creator_signature = like.sign_with_key(self.encryption_key)
 
-    if !like.post_id.blank? && owns?(like.post)
+    if !like.post_id.blank? && person.owns?(like.post)
       like.post_creator_signature = like.sign_with_key(self.encryption_key)
     end
 
@@ -175,21 +175,8 @@ class User < ActiveRecord::Base
   end
 
   def dispatch_like(like)
-    if owns? like.post
-      #push DOWNSTREAM (to original audience)
-      Rails.logger.info "event=dispatch_like direction=downstream user=#{self.diaspora_handle} like=#{like.id}"
-      aspects = aspects_with_post(like.post_id)
-
-      people_in_aspects(aspects, :type => 'local').each do |person|
-        like.socket_to_uid(person.owner_id, :aspect_ids => 'all')
-      end
-
-      push_to_people(like, people_in_aspects(aspects, :type => 'remote'))
-
-    elsif owns? like
-      Rails.logger.info "event=dispatch_like direction=upstream user=#{self.diaspora_handle} like=#{like.id}"
-      push_to_people like, [like.post.person]
-    end
+    mailman = Postzord::Dispatch.new(self, like)
+    mailman.post
   end
 
   ######### Mailer #######################

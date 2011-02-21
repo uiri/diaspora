@@ -11,16 +11,17 @@ class LikesController < CommentsController
 
   def create
     target = current_user.find_visible_post_by_id params[:post_id]
-    if post.likes.where(:diaspora_handle => current_user.diaspora_handle).any?
-      render :nothing => true, :status => 409
-    end
+#    if # compare current_user diaspora handle with all the diaspora handles of people who've already liked it
+#      render :nothing => true, :status => 409
+#    end
+    text = 'likes this'
 
     if target
-      text = 'likes this'
       @like = current_user.build_like(text, :on => target)
-      if @like.save(:safe => true)
-        raise 'MongoMapper failed to catch a failed save' unless @like.id
-        Rails.logger.info("event=like_create user=#{current_user.diaspora_handle} status=success like=#{@like.id}")
+      
+      if @like.save
+        Rails.logger.info("event=create type=like user=#{current_user.diaspora_handle} status=success like=#{@like.id}")
+
         current_user.dispatch_like(@like)
 
         respond_to do |format|
@@ -28,11 +29,10 @@ class LikesController < CommentsController
             json = { :post_id => @like.post_id,
                                        :like_id => @like.id,
                                        :html => render_to_string(
-                                         :partial => 'comments/comment',
-                                         :locals => { :hash => {
-                                           :like => @like,
-                                           :person => current_user,
-                                          }}
+                                         :partial => 'likes/like',
+                                         :locals => { :like => @like,
+                                           :person => current_user.person,
+                                          }
                                         )
                                       }
             render(:json => json, :status => 201)
