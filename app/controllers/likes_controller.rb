@@ -15,34 +15,7 @@ class LikesController < CommentsController
       render :nothing => true, :status => 409
     end
 
-    if params[:dislike]
-      text = 'dislikes this'
-      @dislike = current_user.build_like(text, :on => target)
-      if @dislike.save(:safe => true)
-        raise 'MongoMapper failed to catch a failed save' unless @dislike.id
-        Rails.logger.info("event=like_create user=#{current_user.diaspora_handle} status=success like=#{@dislike.id}")
-        current_user.dispatch_like(@dislike)
-
-        respond_to do |format|
-          format.js{
-            json = { :post_id => @dislike.post_id,
-                                       :like_id => @dislike.id,
-                                       :html => render_to_string(
-                                         :partial => 'likes/like',
-                                         :locals => { :hash => {
-                                           :like => @dislike,
-                                           :person => current_user,
-                                          }}
-                                        )
-                                      }
-            render(:json => json, :status => 201)
-          }
-          format.html{ render :nothing => true, :status => 201 }
-        end
-      else
-        render :nothing => true, :status => 406
-      end
-    else
+    if target
       text = 'likes this'
       @like = current_user.build_like(text, :on => target)
       if @like.save(:safe => true)
