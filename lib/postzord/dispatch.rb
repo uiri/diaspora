@@ -28,6 +28,12 @@ class Postzord::Dispatch
         self.notify_users(local_users)
         local_users << @sender if @object.person.local?
         self.socket_to_users(local_users)
+      elsif @object.is_a?(Like) && @sender.owns?(@object.post)
+        user_ids = [*local_people].map{|x| x.owner_id }
+        local_users = User.where(:id => user_ids)
+        self.notify_users(local_users)
+        local_users << @sender if @object.person.local?
+        self.socket_to_users(local_users)
       else
         self.deliver_to_local(local_people)
       end

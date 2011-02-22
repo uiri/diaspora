@@ -3,12 +3,14 @@
 #   the COPYRIGHT file.
 
 class Like < Comment
+  belongs_to :post, :touch => true
+  belongs_to :person
 
   def receive(user, person)
     local_like = Like.where(:guid => self.guid).first
     like = local_like || self
 
-    unless comment.post.person == user.person || comment.verify_post_creator_signature
+    unless like.post.person == user.person || like.verify_post_creator_signature
       Rails.logger.info("event=receive status=abort reason='like signature not valid' recipient=#{user.diaspora_handle} sender=#{self.post.person.diaspora_handle} payload_type=#{self.class} post_id=#{self.post_id}")
       return
     end

@@ -89,6 +89,12 @@ Factory.define(:comment) do |comment|
   comment.association :post, :factory => :status_message
 end
 
+Factory.define(:like) do |like|
+  like.sequence(:text) {|n| "#{n} cats"}
+  like.association(:person)
+  like.association :post, :factory => :status_message
+end
+
 Factory.define(:notification) do |n|
   n.association :recipient, :factory => :user
   n.association :target, :factory => :comment
@@ -98,5 +104,3 @@ Factory.define(:notification) do |n|
     note.action = note.target.notification_type(note.recipient, note.actors.first)
   end
 end
-
-Factory.define(:like) {}

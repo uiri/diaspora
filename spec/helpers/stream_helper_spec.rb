@@ -18,4 +18,9 @@ describe StreamHelper do
     }
     (time*1000).should < 1
   end
+  it 'renders a new like form' do
+    new_like_form(@post.id, @user).should ==
+      @controller.render_to_string(:partial => 'likes/new_like',
+        :locals => {:post_id => @post.id, :current_user => @user})
+  end
 end

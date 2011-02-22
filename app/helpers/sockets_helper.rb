@@ -28,6 +28,11 @@ module SocketsHelper
         post_hash = {:post => object,
           :person => object.person,
           :photos => object.photos,
+          :likes => object.likes.map{|l|
+            {:like => l,
+             :person => l.person
+            }
+        },
           :comments => object.comments.map{|c|
             {:comment => c,
              :person => c.person
@@ -50,6 +55,9 @@ module SocketsHelper
       elsif object.is_a? Comment
         v = render_to_string(:partial => 'comments/comment', :locals => {:comment => object, :person => object.person})
 
+      elsif object.is_a? Like
+        v = render_to_string(:partial => 'likes/like', :locals => {:like => object, :person => object.person})
+
       elsif object.is_a? Notification
         v = render_to_string(:partial => 'notifications/popup', :locals => {:note => object, :person => opts[:actor]})
 
@@ -70,6 +78,14 @@ module SocketsHelper
     if object.is_a? Comment
       post = object.post
       action_hash[:comment_id] = object.id
+      action_hash[:my_post?] = (post.person.owner_id == uid)
+      action_hash[:post_guid] = post.guid
+
+    end
+
+    if object.is_a? Like
+      post = object.post
+      action_hash[:like_id] = object.id
       action_hash[:my_post?] = (post.person.owner_id == uid)
       action_hash[:post_guid] = post.guid
 

@@ -40,4 +40,14 @@ class User
       c
     end
   end
+
+  def like(text, options = {})
+    fantasy_resque do
+      l = build_like(text, options)
+      if l.save!
+        dispatch_like(l)
+      end
+      l
+    end
+  end
 end

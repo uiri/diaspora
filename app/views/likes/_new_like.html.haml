@@ -3,12 +3,9 @@
 -#   the COPYRIGHT file.
 
 = form_tag( likes_path, :id => "new_like_on_#{post_id}", :class => 'new_like', :remote => true) do
-  .hidden
-    = label_tag "like_text_on_#{post_id}", t('.comment')
-    = text_area_tag :text, nil, :rows => 2, :class => "like_box",:id => "like_text_on_#{post_id}"
+  %p
+    = label_tag "like_text_on_#{post_id}", t('.like')
+    = text_area_tag :text, nil, :rows => 0, :class => "like_box",:id => "like_text_on_#{post_id}"
   = hidden_field_tag :post_id,  post_id, :id => "post_id_on_#{post_id}"
-  = submit_tag t('.comment'), :id => "like_submit_#{post_id}", :class => "like_submit button"
-.submit_instructions.hidden
-  = t('.press')
-  %b= t('.enter')
-  = t('.to_comment')
+  .submit_button
+    = submit_tag :id => "like_submit_#{post_id}", :class => "like_submit button"

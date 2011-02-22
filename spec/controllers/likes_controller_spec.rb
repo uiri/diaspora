@@ -40,10 +40,10 @@ describe LikesController do
         post :create, like_hash
         response.code.should == '201'
       end
-      it "doesn't like twice" do
-        post :create, like_hash
-        response.code.should == '409'
-      end
+#      it "doesn't like twice" do
+#        post :create, like_hash
+#        response.code.should == '409'
+#      end
 #      it "doesn't like and dislike" do
 #        post :create, like_hash
 #        response.code.should == '409'
@@ -54,12 +54,12 @@ describe LikesController do
         post :create, like_hash
         Like.find_by_text(like_hash[:text]).person_id.should == @user1.person.id
       end
-#      it "doesn't overwrite id" do
-#        old_like = user.like("hello", :on => @post)
-#        comment_hash[:id] = old_comment.id
-#        post :create, comment_hash
-#        old_comment.reload.text.should == 'hello'
-#      end
+      it "doesn't overwrite id" do
+        old_like = @user1.like("likes this", :on => @post)
+        like_hash[:id] = old_like.id
+        post :create, like_hash
+        old_like.reload.text.should == 'likes this'
+      end
     end
     context 'on a post from a stranger' do
       before do

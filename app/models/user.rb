@@ -161,8 +161,8 @@ class User < ActiveRecord::Base
   ######### Likes ###########
   def build_like(text, options = {})
     like = Like.new(:person_id => self.person.id,
-                          :text => text,
-                          :post => options[:on])
+                    :text => text,
+                    :post => options[:on])
 
     like.set_guid
     like.creator_signature = like.sign_with_key(self.encryption_key)

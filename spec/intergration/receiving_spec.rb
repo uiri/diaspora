@@ -250,7 +250,6 @@ describe 'a user receives a post' do
     end
   end
 
-
   describe 'receiving mulitple versions of the same post from a remote pod' do
     before do
       @local_luke, @local_leia, @remote_raphael = set_up_friends

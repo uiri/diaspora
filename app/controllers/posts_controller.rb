@@ -10,7 +10,7 @@ class PostsController < ApplicationController
   skip_before_filter :which_action_and_user
 
   def show
-    @post = Post.where(:id => params[:id], :public => true).includes(:person, :comments => :person).first
+    @post = Post.where(:id => params[:id], :public => true).includes(:person, :comments => :person, :likes => :person).first
 
     if @post
       @landing_page = true

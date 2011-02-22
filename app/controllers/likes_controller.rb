@@ -11,7 +11,7 @@ class LikesController < CommentsController
 
   def create
     target = current_user.find_visible_post_by_id params[:post_id]
-#    if # compare current_user diaspora handle with all the diaspora handles of people who've already liked it
+#    if 
 #      render :nothing => true, :status => 409
 #    end
     text = 'likes this'

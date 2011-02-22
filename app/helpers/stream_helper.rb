@@ -17,4 +17,18 @@ module StreamHelper
       :partial => 'comments/new_comment', :locals => {:post_id => GSUB_THIS, :current_user => current_user})
     @form.gsub(GSUB_THIS, post_id.to_s)
   end
+
+  def like_toggle(count)
+    if count <= 2
+      link_to "#{t('stream_helper.hide_likes')} (#{count})", '#', :class => "show_post_likes"
+    else
+      link_to "#{t('stream_helper.show_likes')} (#{count})", '#', :class => "show_post_likes"
+    end
+  end
+
+  def new_like_form(post_id, current_user)
+    @form ||= controller.render_to_string(
+      :partial => 'likes/new_like', :locals => {:post_id => GSUB_THIS, :current_user => current_user})
+    @form.gsub(GSUB_THIS, post_id.to_s)
+  end
 end
