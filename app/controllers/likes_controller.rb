@@ -11,19 +11,15 @@ class LikesController < CommentsController
 
   def create
     target = current_user.find_visible_post_by_id params[:post_id]
-    if !target
-      render :nothing => true, :status => 406
-    elsif target.likes.where(:person_id => current_user.id).any?
-      render :nothing => true, :status => 409
-    else
-      text = 'likes this'
-
-      if target
+    text = 'likes this'
+    
+    if target
+      if target.likes.where(:person_id => current_user.id).empty?
         @like = current_user.build_like(text, :on => target)
       
         if @like.save
           Rails.logger.info("event=create type=like user=#{current_user.diaspora_handle} status=success like=#{@like.id}")
-
+        
           current_user.dispatch_like(@like)
 
           respond_to do |format|
@@ -35,16 +31,18 @@ class LikesController < CommentsController
                                            :locals => { :like => @like,
                                              :person => current_user.person,
                                            }
-                                          )
-                                        }
+                                         )
+                                       }
               render(:json => json, :status => 201)
             }
             format.html{ render :nothing => true, :status => 201 }
           end
-        else
-          render :nothing => true, :status => 406
         end
+      else
+        render :nothing => true, :status => 409
       end
+    else
+      render :nothing => true, :status => 406
     end
   end
 end
