@@ -28,6 +28,7 @@
           = aspect_badges(aspects_with_post(all_aspects, post))
 
       %span.timeago= link_to(how_long_ago(post), status_message_path(post))
+      -# .hidden
+      = link_to 'like', "", :text => "likes this", :post_id => post.id
       = link_to t('comments.new_comment.comment').downcase, '#', :class => 'focus_comment_textarea'
-    -# Like this post link goes here
     = render "comments/comments", :post_id => post.id, :comments => post.comments, :current_user => current_user, :condensed => true, :commenting_disabled => defined?(@commenting_disabled), :likes => post.likes

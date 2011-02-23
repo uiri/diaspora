@@ -58,7 +58,8 @@ describe LikesController do
       end
       it "doesn't like twice" do
         post :create, like_hash
-        @post.likes.where(:person_id => @user1.id).empty?.should == false
+        post :create, like_hash
+#        @post.likes.where(:person_id => @user1.id).empty?.should == false
       end
     end
     context 'on a post from a stranger' do
