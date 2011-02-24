@@ -2,12 +2,9 @@
 -#   licensed under the Affero General Public License version 3 or later.  See
 -#   the COPYRIGHT file.
 
-= form_tag( likes_path, :id => "new_like_on_#{post_id}", :class => 'new_like', :remote => true) do
-  -#.hidden
-    -#%p
-      -#= label_tag "like_text_on_#{post_id}", t('.like')
-      -#= text_area_tag :class => "like_box",:id => "like_text_on_#{post_id}"
-  -#= hidden_field_tag :post_id,  post_id, :id => "post_id_on_#{post_id}", :text => "likes this"
-  .submit_button
-    - submitlike = submit_tag 'like', :id => 'like_submit_#{post_id}', :class => 'like_submit button', :text => 'likes this'
-    = link_to 'like', submitlike
+= form_tag(likes_path, :id => "new_like_on_#{post_id}", :class => 'new_like', :remote => true) do
+  = hidden_field_tag :post_id, post_id, :id => "post_id_on_#{post_id}", :text => "likes this"
+  .hidden
+    .submit_button
+      = submit_tag 'like', :id => "like_submit_#{post_id}", :class => "show_post_comments"
+= link_to 'like', "", :id => "new_like_link"

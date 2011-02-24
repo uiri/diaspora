@@ -71,6 +71,14 @@ var Stream = {
       Diaspora.widgets.alert.alert('Failed to post message!');
     });
 
+    $(".new_like").live('ajax:success', function(data, json, xhr) {
+      json = $.parseJSON(json);
+      WebSocketReceiver.processLike(json.post_id, json.like_id, json.html, false);
+    });
+    $(".new_like").live('ajax:failure', function(data, html, xhr) {
+      Diaspora.widgets.alert.alert('Failed to post message!');
+    });
+
     $(".stream").find(".delete").live('ajax:success', function(data, html, xhr) {
       $(this).parents(".stream_element").hide('blind', { direction: 'vertical' }, 300);
     });

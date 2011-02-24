@@ -35,6 +35,13 @@ var WebSocketReceiver = {
             'my_post?': obj['my_post?']
           });
 
+        } else if (obj['class']=="likes") {
+          WebSocketReceiver.processLike(obj.post_id, obj.like_id, obj.html, {
+            //'notification': obj.notification,
+            'mine?': obj['mine?'],
+            'my_post?': obj['my_post?']
+          });
+
         } else {
           WebSocketReceiver.processPost(obj['class'], obj.post_id, obj.html, obj.aspect_ids);
         }
@@ -113,6 +120,32 @@ var WebSocketReceiver = {
     }
 
     Diaspora.widgets.timeago.updateTimeAgo();
+  },
+
+  processLike: function(postId, likeId, html, opts) {
+
+    if( $(".like[data-guid='"+likeId+"']").length == 0 ) {
+
+      var post = $("*[data-guid='"+postId+"']'");
+      $('.like li:last', post ).before(
+        $(html).fadeIn("fast", function(){})
+      );
+      var toggler = $('.show_post_likes', post);
+
+      if(toggler.length > 0){
+        toggler.html(
+          toggler.html().replace(/\d+/,$('.likes', post).find('li').length -1)
+        );
+
+        if( !$(".likes", post).is(':visible') ) {
+          toggler.click();
+        }
+
+        if( $(".show_likes", post).hasClass('hidden') ){
+          $(".show_likes", post).removeClass('hidden');
+        }
+      }
+    }
   },
 
   processPost: function(className, postId, html, aspectIds) {
